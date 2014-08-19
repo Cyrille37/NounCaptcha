@@ -1,0 +1,35 @@
+@CHARSET "UTF-8";
+
+#nouncaptcha ul {
+	margin-bottom: 4px;
+	margin-top: 4px;
+	height: 54px ;
+}
+
+#nouncaptcha li {
+	 list-style-type: none ;
+}
+
+#nouncaptcha .attribution {
+	font-size: .9em;
+	font-style: italic;	
+}
+
+#nouncaptcha .nouncaptcha_img {
+	margin-left: 8px ;
+	width: 48px; height: 48px ;
+	padding: 4px;
+}
+#nouncaptcha .nouncaptcha_img_selected {
+	border: solid 2px #000000;
+	-moz-box-shadow: 1px 1px 5px #CCC;
+	-webkit-box-shadow: 1px 1px 5px #CCC;
+  box-shadow: 1px 1px 5px #CCC;
+}
+
+#nouncaptcha a:hover img.nouncaptcha_img {
+	border: solid 1px #CCC;
+	-moz-box-shadow: 1px 1px 5px #999;
+	-webkit-box-shadow: 1px 1px 5px #999;
+  box-shadow: 1px 1px 5px #999;
+}

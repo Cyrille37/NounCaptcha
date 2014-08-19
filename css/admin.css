@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+
+#icon-NounCaptcha.icon32 {
+	background: url(../images/nouncaptcha-logo-32x32.png) 0px 0px no-repeat;
+}
+
+.dummy_option {
+	font-style: italic;
+	color: gray;
+}
