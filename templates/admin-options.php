@@ -2,16 +2,11 @@
 NounCaptcha admin options page
 -->
 <div class="wrap">
-<<<<<<< HEAD
 	<?php /* PHP Deprecated:  screen_icon est <strong>obsolète</strong> depuis la version 3.8.0, aucune alternative n’est disponible.
 	screen_icon('NounCaptcha'); */ ?>
 	<h2>
 		<img src="<?php echo NOUNCAPTCHA_IMAGES_URL ?>/nouncaptcha-logo.png"
 			style="width: 90px; vertical-align: middle;" />
-=======
-	<?php screen_icon('NounCaptcha'); ?>
-	<h2>
->>>>>>> 872cbda841303318975071afaebb3203ce0eb19b
 		<?php _e('NounCaptcha Settings') ?>
 	</h2>
 
@@ -62,11 +57,7 @@ NounCaptcha admin options page
 								if( $f[0] == '.' )
 									continue ;
 								if( is_dir( NOUNCAPTCHA_NOUNS_PATH.'/'.$f ) ) {
-<<<<<<< HEAD
 									$captcha_file = NOUNCAPTCHA_NOUNS_PATH.'/'.$f.'/captchas.txt' ;
-=======
-									$captcha_file = NOUNCAPTCHA_NOUNS_PATH.'/'.$f.'/captchas.txt' ;
->>>>>>> 872cbda841303318975071afaebb3203ce0eb19b
 									if( ! file_exists($captcha_file ))
 										continue ;
 							?>

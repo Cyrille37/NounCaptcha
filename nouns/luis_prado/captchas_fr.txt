@@ -12,20 +12,12 @@ url = http://thenounproject.com/Luis
 [Q1]
 text = "Je me promène dans la savane, qui suis-je ?"
 image_good = noun_project_14048.png
-<<<<<<< HEAD
 images = noun_project_2959.png, noun_project_9390.png, noun_project_13687.png, noun_project_13708.png, noun_project_14093.png, noun_diver_3462606.png
-=======
-images = noun_project_2959.png, noun_project_9390.png, noun_project_13687.png, noun_project_13708.png, noun_project_14093.png
->>>>>>> 872cbda841303318975071afaebb3203ce0eb19b
 
 [Q2]
 text = "Seriez-vous retrouver le Geek ?"
 image_good = noun_project_13708.png
-<<<<<<< HEAD
 images = noun_project_8900.png, noun_project_9539.png, noun_project_11537.png, noun_project_12674.png, noun_project_15274.png, noun_project_3107.png, noun_project_9390.png, noun_Fishing_3462686.png, noun_diver_3462606.png
-=======
-images = noun_project_8900.png, noun_project_9539.png, noun_project_11537.png, noun_project_12674.png, noun_project_15274.png
->>>>>>> 872cbda841303318975071afaebb3203ce0eb19b
 
 [Q3]
 text = "Je suis bien dans les bras de ma maman, où suis-je ?"
@@ -40,11 +32,7 @@ images = noun_project_9390.png, noun_project_11393.png, noun_project_12674.png, 
 [Q5]
 text = "Nous sommes trois, retrouvez-nous !"
 image_good = noun_project_3707.png
-<<<<<<< HEAD
 images = noun_project_3415.png, noun_project_3706.png, noun_Fishing_3462686.png, noun_project_3716.png, noun_project_8900.png, noun_diver_3462606.png
-=======
-images = noun_project_3415.png, noun_project_3706.png, noun_project_3716.png, noun_project_8900.png
->>>>>>> 872cbda841303318975071afaebb3203ce0eb19b
 
 
 
