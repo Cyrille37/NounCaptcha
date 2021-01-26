@@ -23,10 +23,14 @@ NounCaptcha is a simple but pleasant visual captcha plugin, witch try to recogni
 It use drawings from The Noun Project http://TheNounProject, witch I love ;-)
 
 NounCaptcha works only with images, no sound, so it is not accessible to blind people, I'm sorry.
+<<<<<<< HEAD
 
 The plugin works alone, without Php session, without Cookie, without API or other third party web site.
 The Captcha response is encoded in a hiddent field.
 
+=======
+The plugin works alone, on your Wordpress instance, without API or other third party web site.
+>>>>>>> 872cbda841303318975071afaebb3203ce0eb19b
 Captcha are defined in text file, in INI file format, so it's very easy to change or create questions.
 You can define catpcha for several languages.
 
@@ -45,7 +49,10 @@ You can define catpcha for several languages.
 It's very simple to install the plugin. You can :
 
 1. use the integrated Wordpress plugin installer and search for "NounCaptcha".
+<<<<<<< HEAD
 2. You cannot do that because Wordpress moderator refused this plugin because of NounProject incompatibility licence.
+=======
+>>>>>>> 872cbda841303318975071afaebb3203ce0eb19b
 
 or
 
@@ -56,11 +63,19 @@ or
 
 == Upgrade Notice ==
 
+<<<<<<< HEAD
 Will come with a futur version, this one is the first ;-)
 
 == Frequently Asked Questions ==
 
 There is no question yet... They'll come soon, or not ;-)
+=======
+Will come with the next version, this one is the first ;-)
+
+== Frequently Asked Questions ==
+
+There is no  question yet... They'll come soon, or not ;-)
+>>>>>>> 872cbda841303318975071afaebb3203ce0eb19b
 
 == Screenshots ==
 

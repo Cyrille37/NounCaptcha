@@ -3,8 +3,11 @@
 $with_require_star = isset($with_require_star) ? $with_require_star : false ;
 
 $noun_name = nouncaptcha_get_option('noun_name');
+<<<<<<< HEAD
 if( empty($noun_name) )
 	wp_die(NOUNCAPTCHA_BAD_CONFIG_MESSAGE);
+=======
+>>>>>>> 872cbda841303318975071afaebb3203ce0eb19b
 
 $captcha_folder = NOUNCAPTCHA_NOUNS_PATH.'/'.$noun_name ;
 $language = substr( get_locale(), 0, 2 );
@@ -52,6 +55,7 @@ jQuery(document).ready(function($) {
 
 });
 </script>
+<<<<<<< HEAD
 
 <div id="nouncaptcha">
 	<label>
@@ -60,6 +64,22 @@ jQuery(document).ready(function($) {
 			<span class="required">*</span>
 		<?php } ?>
 	</label>
+=======
+<style type="text/css">
+<!--
+
+-->
+</style>
+<div id="nouncaptcha">
+	<p>
+		<label>
+			<?php echo $captcha['text'] ?>
+			<?php if( $with_require_star ){ ?>
+				<span class="required">*</span>
+			<?php } ?>
+		</label>
+	</p>
+>>>>>>> 872cbda841303318975071afaebb3203ce0eb19b
 	<ul>
 		<?php
 		$image_good = $captcha['image_good'];
@@ -68,6 +88,7 @@ jQuery(document).ready(function($) {
 			$image = trim($captcha_images[$i]);
 			if(	$image == $image_good )
 				$nouncaptcha_code = sha1(nouncaptcha_get_secret_key().$i);
+<<<<<<< HEAD
 			?>
 			<li>
 				<a href="javascript:void(0)">
@@ -79,12 +100,26 @@ jQuery(document).ready(function($) {
 				</a>
 			</li>
 			<?php
+=======
+		?>
+		<li style="float: left">
+			<a href="javascript:void(0)">
+				<img
+					class="nouncaptcha_img"
+					data-pos="<?php echo ($i+1) ?>"
+					src="<?php echo NOUNCAPTCHA_NOUNS_URL.'/'.$noun_name.'/'.$image ?>"
+				/>
+			</a>
+		</li>
+		<?php
+>>>>>>> 872cbda841303318975071afaebb3203ce0eb19b
 		}
 		?>
 	</ul>
 	<input type="hidden" name="nouncaptcha_code" id="nouncaptcha_code" value="<?php echo $nouncaptcha_code ?>" />
 	<input type="hidden" name="nouncaptcha_response" id="nouncaptcha_response" value="" />
 
+<<<<<<< HEAD
 	<span class="attribution tooltip-box">
 		© icons
 		<a class="tooltip-text" href="<?php echo $captchas['attribution']['url'] ?>" target="_blank">
@@ -92,3 +127,10 @@ jQuery(document).ready(function($) {
 	</span>
 
 </div>
+=======
+	<p class="attribution" style="clear: both;">drawings attribution: <a href="<?php echo $captchas['attribution']['url'] ?>" target="_blank">
+		<?php echo $captchas['attribution']['text'] ?></a>
+	</p>
+</div>
+
+>>>>>>> 872cbda841303318975071afaebb3203ce0eb19b

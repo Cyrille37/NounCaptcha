@@ -4,6 +4,11 @@ add_action( 'admin_init', 'nouncaptcha_admin_init' );
 // add link to settings menu
 add_action('admin_menu', 'nouncaptcha_admin_menu');
 
+<<<<<<< HEAD
+=======
+wp_enqueue_style( 'nouncaptcha_css', NOUNCAPTCHA_URL. '/css/admin.css'  );
+
+>>>>>>> 872cbda841303318975071afaebb3203ce0eb19b
 /**
  *
  * @return void
@@ -13,7 +18,10 @@ function nouncaptcha_admin_init()
 	// Register our settings so that $_POST handling is done for us
 
 	register_setting( 'nouncaptcha_settings', 'nouncaptcha_settings' );
+<<<<<<< HEAD
 	wp_enqueue_style( 'nouncaptcha_css', NOUNCAPTCHA_URL. '/css/admin.css'  );
+=======
+>>>>>>> 872cbda841303318975071afaebb3203ce0eb19b
 
 }
 
@@ -21,6 +29,7 @@ function nouncaptcha_admin_init()
  * Add NounCaptcha settings link to admin menu
  * @return void
 */
+<<<<<<< HEAD
 function nouncaptcha_admin_menu()
 {
 	//add_menu_page(
@@ -34,6 +43,15 @@ function nouncaptcha_admin_menu()
 		'nouncaptcha_options_page'
 	);
 
+=======
+function nouncaptcha_admin_menu() {
+	//$menu_item = "<div class='admin-menu-item'>NounCaptcha</div>";
+	add_menu_page(
+	__('NounCaptcha', 'nouncaptcha'),
+	__('NounCaptcha', 'nouncaptcha'),
+	'manage_options', 'nouncaptcha', 'nouncaptcha_options_page',
+	NOUNCAPTCHA_URL.'/images/nouncaptcha-logo-16x16.png');
+>>>>>>> 872cbda841303318975071afaebb3203ce0eb19b
 }
 
 /**
