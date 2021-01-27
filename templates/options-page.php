@@ -33,10 +33,11 @@ NounCaptcha admin options page
 
 						<tr valign="top">
 							<th scope="row"><?php _e( 'Activate on registration form' ); ?></th>
-							<td><input type="checkbox"
+							<td>
+								<input type="checkbox"
 									name="<?php echo Plugin::NAME ?>[on_form_registration]" value="1"
 									<?php checked( '1', $this->get_option('on_form_registration') ); ?>
-								/>
+									/>
 								<p class="description">
 									<?php _e( 'NounCaptcha can be activated on registration form' ); ?>
 								</p>
@@ -47,10 +48,11 @@ NounCaptcha admin options page
 
 						<tr valign="top">
 							<th scope="row"><?php _e( 'Activate on comment' ); ?></th>
-							<td><input type="checkbox"
+							<td>
+								<input type="checkbox"
 									name="<?php echo Plugin::NAME ?>[on_comment]" value="1"
 									<?php \checked( '1', $this->get_option('on_comment') ); ?>
-								/>
+									/>
 								<p class="description">
 									<?php _e( 'NounCaptcha can be activated on comment' ); ?>
 								</p>
@@ -67,12 +69,12 @@ NounCaptcha admin options page
 									multiple="multiple"
 									>
 									<?php
-									$nouns = $this->get_option('nouns');
+									$nouns = $this->get_option( 'nouns', [] );
 									foreach( $this->getNounsNames() as $name )
 									{ ?>
 										<option value="<?php echo $name ?>"
 											<?php echo (in_array($name, $nouns) ? 'selected="selected"':'') ?>
-										>
+											>
 											<?php echo $name; ?>
 										</option>
 									<?php

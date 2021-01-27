@@ -10,6 +10,7 @@ class Back extends Plugin
 {
     public function __construct()
     {
+        // Ignore the request
         if( $this->ignoreRequest() )
             return ;
 
@@ -18,6 +19,7 @@ class Back extends Plugin
         add_action('admin_init', [$this, 'wp_admin_init'] );
         add_action('admin_menu', [$this, 'wp_admin_menu']);
 
+        // Only on option page
         if( ! isset($GLOBALS['pagenow']) || ($GLOBALS['pagenow'] != 'options-general.php') )
             return ;
 
@@ -59,11 +61,13 @@ class Back extends Plugin
 
     public function wp_admin_enqueue_scripts()
     {
-        Utils::debug(__METHOD__);
+        // CSS
 
         $handle = Plugin::NAME.'-admin-css' ;
         $ver = filemtime( $this->plugin_dir . '/css/admin.css' );
         wp_enqueue_style( $handle, $this->plugin_url . '/css/admin.css', [], $ver, 'all');
+
+        // JS
 
         $handle = Plugin::NAME.'-admin-js' ;
         $ver = filemtime( $this->plugin_dir . '/js/admin.js' );
@@ -73,7 +77,6 @@ class Back extends Plugin
             'nouns'=>$this->getNouns()
         ] );
         wp_enqueue_script( $handle );
-
     }
 
     /**

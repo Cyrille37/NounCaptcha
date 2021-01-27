@@ -16,6 +16,9 @@ class Plugin
     public $nouns_dir ;
     public $nouns_url ;
 
+    /**
+     * Initialize path & url.
+     */
     public function __construct()
     {
         /*
@@ -40,6 +43,13 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
         $this->nouns_url = $this->plugin_url.'/nouns';
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $name
+     * @param mixed $default
+     * @return mixed
+     */
     function get_option( $name, $default=null )
     {
         $opts = get_option( Plugin::NAME );
