@@ -57,6 +57,14 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
 	    update_option(Plugin::NAME,$opts);
     }
 
+    /**
+     * Look in $this->nouns_dir for subfolders.
+     * It takes each subfolder name a the Noun name.
+     * Load file "captchas.php" found in Noun folder,
+     * and override its values if file "captchas_<lang>.php" exists.
+     *
+     * @return void
+     */
     public function getNouns()
     {
         static $nouns = null ;
@@ -64,7 +72,7 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
         if( !empty($nouns) )
             return $nouns ;
 
-        $lang = substr( get_locale(), 0, 2 );
+        $lang = \substr( get_locale(), 0, 2 );
         if ($dir = opendir($this->nouns_dir) )
         {
             while( false !== ($f = readdir($dir)) )
@@ -74,13 +82,18 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
                     continue ;
                 if( ! is_dir( $this->nouns_dir.'/'.$f ) )
                     continue ;
-                
-                $captcha_file = $this->nouns_dir.'/'.$f.'/captchas_'.$lang.'.php' ;
-                if( ! file_exists($captcha_file ))
-                    $captcha_file = $this->nouns_dir.'/'.$f.'/captchas.php' ;
+
+                $captcha_file = $this->nouns_dir.'/'.$f.'/captchas.php' ;
                 if( ! file_exists($captcha_file ))
                     continue ;
                 $nouns[$f] = require($captcha_file) ;
+
+                $captcha_file = $this->nouns_dir.'/'.$f.'/captchas_'.$lang.'.php' ;
+                if( file_exists($captcha_file ))
+                {
+                    $overide = require($captcha_file);
+                    $nouns[$f] = \array_replace_recursive($nouns[$f], $overide);
+                }
             }
         }
         //Utils::debug(__METHOD__,$nouns);
