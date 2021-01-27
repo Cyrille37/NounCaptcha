@@ -1,15 +1,13 @@
 <?php
 /**
- * Captcha definition
- * project NounCaptcha, a captcha as a Wordpress Plugin
- * 
- * Tips:
- * SVG to 48x48 PNG : `mogrify -format png -resize 48x48 *.svg`
+ * Captcha definition.
+ * French language overide.
+ * @see captchas.php
  */
 return [
 
     'attribution'=>[
-        'text' => 'CC BY 3.0, Luis Prado de The Noun Project',
+        'text' => 'CC BY 3.0, Luis Prado de "The Noun Project"',
     ],
     'questions' => [
 
@@ -28,7 +26,5 @@ return [
         [
             'text' => 'Nous sommes trois, retrouvez-nous !',
         ],
-
     ]
-
 ];

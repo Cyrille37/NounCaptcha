@@ -88,6 +88,7 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
                     continue ;
                 $nouns[$f] = require($captcha_file) ;
 
+                // Overide language's values (like question text)
                 $captcha_file = $this->nouns_dir.'/'.$f.'/captchas_'.$lang.'.php' ;
                 if( file_exists($captcha_file ))
                 {
@@ -102,23 +103,6 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
 
     public function getNounsNames()
     {
-        
-        /*
-        $names = [] ;
-        if ($dir = opendir($this->nouns_dir) )
-        {
-            while( false !== ($f = readdir($dir)) )
-            {
-                //echo "$f\n";
-                if( $f[0] == '.' )
-                    continue ;
-                if( is_dir( $this->nouns_dir.'/'.$f ) )
-                    $captcha_file = $this->nouns_dir.'/'.$f.'/captchas.php' ;
-                if( ! file_exists($captcha_file ))
-                    continue ;
-                $names[] = $f ;
-            }
-        }*/
         return array_keys( $this->getNouns() );
     }
 }
