@@ -9,13 +9,24 @@
 .postbox h2 {
 	padding: 12px;
 }
+
+#nouncaptcha-preview .noon {
+	border-radius: 1em;
+	border: solid lightgray 1px ;
+	padding: 1em;
+}
+#nouncaptcha-preview .noon h3 {
+	margin: 0 0 ;
+}
 #nouncaptcha-preview ul {
 	list-style: none;
 }
-
 #nouncaptcha-preview li {
     display: inline-block;
 }
 #nouncaptcha-preview li.answer {
     border: lightgreen solid 2px ;
+}
+#nouncaptcha-preview img {
+    margin-right: 4px;
 }

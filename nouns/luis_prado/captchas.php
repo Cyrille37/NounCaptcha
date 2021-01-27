@@ -10,7 +10,7 @@ return [
 
     'attribution'=>[
         'text' => 'CC BY 3.0, Luis Prado from "The Noun Project"',
-        'url' => 'http://thenounproject.com/Luis',
+        'url' => 'https://thenounproject.com/Luis',
     ],
     'questions' => [
 

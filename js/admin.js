@@ -21,7 +21,7 @@ jQuery(document).ready(function($)
         for( var name in nouns )
         {
             var noun = nouns[name] ;
-            var $noun = $('<div>');
+            var $noun = $('<div class="noon">');
             $(
                 '<h3>'+name+'</h3>'
                 +'<p>'
