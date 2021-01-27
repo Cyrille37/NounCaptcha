@@ -1,10 +1,21 @@
-@CHARSET "UTF-8";
 
-#icon-NounCaptcha.icon32 {
+/*#icon-NounCaptcha.icon32 {
 	background: url(../images/nouncaptcha-logo-32x32.png) 0px 0px no-repeat;
+}*/
+
+.wrap h1 {
+	margin-bottom: 1em;
+}
+.postbox h2 {
+	padding: 12px;
+}
+#nouncaptcha-preview ul {
+	list-style: none;
 }
 
-.dummy_option {
-	font-style: italic;
-	color: gray;
+#nouncaptcha-preview li {
+    display: inline-block;
+}
+#nouncaptcha-preview li.answer {
+    border: lightgreen solid 2px ;
 }

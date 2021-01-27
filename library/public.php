@@ -1,7 +1,5 @@
 <?php
 
-//wp_enqueue_style( 'nouncaptcha_css', NOUNCAPTCHA_URL. '/css/public.css'  );
-
 // add Sweet Captcha to registration form
 if ( nouncaptcha_get_option('on_form_registration') ) {
 

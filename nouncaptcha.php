@@ -9,10 +9,30 @@ Author URI: http://cyrille37.myopenid.com/
 License: GNU LGPL v3
 */
 
-// for backward compatibility - 2.0
-defined('WP_PLUGIN_DIR')
-	or define('WP_PLUGIN_DIR', ABSPATH . '/wp-content/plugins');
+require_once(__DIR__.'/src/Utils.php');
+use Cyrille\NounCaptcha\Utils ;
+Utils::debug(__METHOD__, [
+	'doing_ajax'=> (defined('DOING_AJAX') && DOING_AJAX ? true : false),
+	'is_admin'=>is_admin(),
+	'is_blog_admin' => is_blog_admin(),
+	'pagenow' => isset($GLOBALS['pagenow']) ? $GLOBALS['pagenow'] : 'null',
+	'request_method'=>$_SERVER['REQUEST_METHOD'],
+]);
 
+if( is_blog_admin() )
+{
+	require_once(__DIR__.'/src/Back.php');
+	new Cyrille\NounCaptcha\Back();
+}
+else if( is_admin() )
+{
+}
+else
+{
+	require_once(__DIR__.'/src/Front.php');
+}
+
+/*
 // define absolute path to plugin
 define('NOUNCAPTCHA_DIR_NAME', basename( dirname(__FILE__) ));
 define('NOUNCAPTCHA_ROOT', WP_PLUGIN_DIR . '/' . NOUNCAPTCHA_DIR_NAME);
@@ -28,23 +48,6 @@ define('NOUNCAPTCHA_BAD_CONFIG_MESSAGE', '<h1 style="color: red">Plugin NounCapt
 define('NOUNCAPTCHA_ERROR_MESSAGE', 'The response you submitted was incorrect. Please try again.');
 define('NOUNCAPTCHA_ERROR_MESSAGE_BR', 'The response you submitted was incorrect.<br/>Please try again.');
 
-$nouncaptcha_settings = get_option( 'nouncaptcha_settings' );
-if( ! is_array($nouncaptcha_settings) )
-{
-	$nouncaptcha_settings = array();
-}
-
-function nouncaptcha_get_option( $name, $default=null )
-{
-	global $nouncaptcha_settings ;
-	return isset($nouncaptcha_settings[$name]) ? $nouncaptcha_settings[$name] : $default ;
-}
-
-function nouncaptcha_set_option( $name, $value )
-{
-	global $nouncaptcha_settings ;
-	update_option('nouncaptcha_settings',$nouncaptcha_settings);
-}
 
 function nouncaptcha_init() {
 	//global $wpdb;
@@ -52,17 +55,4 @@ function nouncaptcha_init() {
 	wp_enqueue_script( 'nouncaptcha.js', plugins_url( 'js/nouncaptcha.js', __FILE__ ) );
 }
 add_action('init', 'nouncaptcha_init', 100);
-
-/*
-function nouncaptcha_plugins_loaded() {
-}
-add_action( 'plugins_loaded', 'nouncaptcha_plugins_loaded', 1 );
 */
-
-if (is_admin()) {
-	require_once NOUNCAPTCHA_LIBRARY . '/admin.php';
-
-}else {
-	require_once NOUNCAPTCHA_LIBRARY . '/public.php';
-
-}
