@@ -1,15 +1,24 @@
 <?php
+/**
+ * To work whit Contact Form 7.
+ * 
+ * Largely inspired by "[WP Captcha](https://fr.wordpress.org/plugins/wp-captcha/)" by Devnath Verma. Thanks to him !
+ * 
+ * Around Captcha
+ * - [Adding captcha to Contact Form 7 ](https://www.sterupdesign.com/dev/wordpress/plugins/flexible-captcha/documentation/adding-captcha-to-contact-form-7/)
+ * - https://gist.github.com/jrobinsonc/6d70feac58bfa24a93d19f28303f4e5a
+ * Around validation
+ * - https://contactform7.com/2015/03/28/custom-validation/
+ * 
+ */
+
 namespace Cyrille\NounCaptcha\Services ;
 
 use Cyrille\NounCaptcha\Utils ;
 use Cyrille\NounCaptcha\Plugin ;
 
 /**
- * Around Captcha
- * - [Adding captcha to Contact Form 7 ](https://www.sterupdesign.com/dev/wordpress/plugins/flexible-captcha/documentation/adding-captcha-to-contact-form-7/)
- * - https://gist.github.com/jrobinsonc/6d70feac58bfa24a93d19f28303f4e5a
- * Around validation
- * - https://contactform7.com/2015/03/28/custom-validation/
+ * 
  * 
  */
 class ContactForm7
@@ -81,7 +90,7 @@ class ContactForm7
 	}
 	
 	/**
-	 * Create WP Captcha " Tag attributes" in contact form 7 Plugin.
+	 * Create Noun Captcha "Tag attributes" in contact form 7 Plugin.
 	 * @package  WP Captcha
 	 * @version  1.0.0
 	 * @author   Devnath verma <devnathverma@gmail.com>
@@ -127,8 +136,7 @@ class ContactForm7
 			</div>
 			<br class="clear">
 		</div>
-	
-    <?php
+        <?php
     }
 
 }

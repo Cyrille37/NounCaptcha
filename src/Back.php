@@ -19,11 +19,23 @@ class Back extends Plugin
         add_action('admin_init', [$this, 'wp_admin_init'] );
         add_action('admin_menu', [$this, 'wp_admin_menu']);
 
+
         // Only on option page
-        if( ! isset($GLOBALS['pagenow']) || ($GLOBALS['pagenow'] != 'options-general.php') )
+        if( ! isset($GLOBALS['pagenow']) )
             return ;
 
-        add_action('admin_enqueue_scripts', [$this, 'wp_admin_enqueue_scripts']);
+        switch( $GLOBALS['pagenow'] )
+        {
+            case 'plugins.php':
+                // return plugin setting page links on install plugins
+    		    add_action( 'plugin_action_links', [$this, 'wp_plugin_action_links'], 10, 2 );
+                break;
+
+            case 'options-general.php':
+                add_action('admin_enqueue_scripts', [$this, 'wp_admin_enqueue_scripts']);
+                break ;
+        }
+
     }
 
     protected function ignoreRequest()
@@ -47,6 +59,31 @@ class Back extends Plugin
             return true ;
 
         return false ;
+    }
+
+    /**
+     * Add link to plugin settings for page "plugins.php".
+     *
+     * @param array $links
+     * @param string $file
+     * @return void
+     */
+    public function wp_plugin_action_links( $links, $file )
+    {
+        static $plug ;
+
+        if ( ! \current_user_can( 'manage_options' ) )
+            return $links;
+
+        if( empty($plug) )
+            $plug = \plugin_basename( $this->plugin_dir ) ;
+
+        if( \dirname($file) == $plug )
+            $links[] = sprintf( '<a href="%s">%s</a>',
+                \admin_url( 'admin.php' ) . '?page='.Plugin::NAME,
+                __( 'Settings', 'wp-captcha' ) );
+
+		return $links;
     }
 
     /**
