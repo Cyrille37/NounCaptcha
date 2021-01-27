@@ -12,11 +12,11 @@ License: GNU LGPL v3
 require_once(__DIR__.'/src/Utils.php');
 use Cyrille\NounCaptcha\Utils ;
 Utils::debug(__METHOD__, [
+	'request_method'=>$_SERVER['REQUEST_METHOD'],
 	'doing_ajax'=> (defined('DOING_AJAX') && DOING_AJAX ? true : false),
 	'is_admin'=>is_admin(),
 	'is_blog_admin' => is_blog_admin(),
 	'pagenow' => isset($GLOBALS['pagenow']) ? $GLOBALS['pagenow'] : 'null',
-	'request_method'=>$_SERVER['REQUEST_METHOD'],
 	'nouncaptcha' => (isset($_POST['nouncaptcha']) ? $_POST['nouncaptcha'] : 'null'),
 ]);
 
@@ -31,6 +31,7 @@ else if( is_admin() )
 else
 {
 	require_once(__DIR__.'/src/Front.php');
+	new Cyrille\NounCaptcha\Front();
 }
 
 /*

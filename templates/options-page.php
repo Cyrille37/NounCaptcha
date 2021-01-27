@@ -29,17 +29,17 @@ NounCaptcha admin options page
 				<table class="form-table">
 					<tbody>
 
-						<!-- Option: on_form_registration -->
+						<!-- Option: on_registration -->
 
 						<tr valign="top">
 							<th scope="row"><?php _e( 'Activate on registration form' ); ?></th>
 							<td>
 								<input type="checkbox"
-									name="<?php echo Plugin::NAME ?>[on_form_registration]" value="1"
-									<?php checked( '1', $this->get_option('on_form_registration') ); ?>
+									name="<?php echo Plugin::NAME ?>[on_registration]" value="1"
+									<?php checked( '1', $this->get_option('on_registration') ); ?>
 									/>
 								<p class="description">
-									<?php _e( 'NounCaptcha can be activated on registration form' ); ?>
+									<?php _e( 'NounCaptcha can be activated on Wordpress registration form' ); ?>
 								</p>
 							</td>
 						</tr>
@@ -54,7 +54,22 @@ NounCaptcha admin options page
 									<?php \checked( '1', $this->get_option('on_comment') ); ?>
 									/>
 								<p class="description">
-									<?php _e( 'NounCaptcha can be activated on comment' ); ?>
+									<?php _e( 'NounCaptcha can be activated on Wordpress comment' ); ?>
+								</p>
+							</td>
+						</tr>
+
+						<!-- Option: on_wpcf7 -->
+
+						<tr valign="top">
+							<th scope="row"><?php _e( 'Activate on Contact Form7' ); ?></th>
+							<td>
+								<input type="checkbox"
+									name="<?php echo Plugin::NAME ?>[on_wpcf7]" value="1"
+									<?php \checked( '1', $this->get_option('on_wpcf7') ); ?>
+									/>
+								<p class="description">
+									<?php _e( 'NounCaptcha can be activated on Contact Form7' ); ?>
 								</p>
 							</td>
 						</tr>

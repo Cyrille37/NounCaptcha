@@ -2,6 +2,7 @@
 namespace Cyrille\NounCaptcha ;
 
 require_once(__DIR__.'/Utils.php');
+require_once(__DIR__.'/ServicesFactory.php');
 
 /**
  * 
@@ -41,6 +42,8 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
         $this->images_url = $this->plugin_url.'/images' ;
         $this->nouns_dir = $this->plugin_dir.'/nouns';
         $this->nouns_url = $this->plugin_url.'/nouns';
+
+        new ServicesFactory( $this );
     }
 
     /**
@@ -68,6 +71,20 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
     }
 
     /**
+     * Folders to explore for Nouns.
+     * @return array
+     */
+    public function getNounsFolders()
+    {
+        $folders = [
+            $this->nouns_dir
+        ];
+        if( \file_exists( get_stylesheet_directory().'/nouns') )
+            $folders[] = get_stylesheet_directory().'/nouns' ;
+        return $folders ;
+    }
+
+    /**
      * Look in $this->nouns_dir for subfolders.
      * It takes each subfolder name a the Noun name.
      * Load file "captchas.php" found in Noun folder,
@@ -83,27 +100,37 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
             return $nouns ;
 
         $lang = \substr( get_locale(), 0, 2 );
-        if ($dir = opendir($this->nouns_dir) )
+
+        Utils::debug(__METHOD__,[
+            get_stylesheet_directory(),
+        ]);
+
+        foreach( $this->getNounsFolders() as $folder )
         {
-            while( false !== ($f = readdir($dir)) )
+            if ($dir = opendir($folder) )
             {
-                //echo "$f\n";
-                if( $f[0] == '.' )
-                    continue ;
-                if( ! is_dir( $this->nouns_dir.'/'.$f ) )
-                    continue ;
-
-                $captcha_file = $this->nouns_dir.'/'.$f.'/captchas.php' ;
-                if( ! file_exists($captcha_file ))
-                    continue ;
-                $nouns[$f] = require($captcha_file) ;
-
-                // Overide language's values (like question text)
-                $captcha_file = $this->nouns_dir.'/'.$f.'/captchas_'.$lang.'.php' ;
-                if( file_exists($captcha_file ))
+                while( false !== ($f = readdir($dir)) )
                 {
-                    $overide = require($captcha_file);
-                    $nouns[$f] = \array_replace_recursive($nouns[$f], $overide);
+                    //echo "$f\n";
+                    if( $f[0] == '.' )
+                        continue ;
+                    $ff = $folder.'/'.$f ;
+                    if( ! is_dir( $ff ) )
+                        continue ;
+
+                    // Load a Noun
+                    $captcha_file = $ff.'/captchas.php' ;
+                    if( ! file_exists($captcha_file ))
+                        continue ;
+                    $nouns[$f] = require($captcha_file) ;
+
+                    // Overide language's values (like question text) for this Noun
+                    $captcha_file = $ff.'/captchas_'.$lang.'.php' ;
+                    if( file_exists($captcha_file ))
+                    {
+                        $overide = require($captcha_file);
+                        $nouns[$f] = \array_replace_recursive($nouns[$f], $overide);
+                    }
                 }
             }
         }
