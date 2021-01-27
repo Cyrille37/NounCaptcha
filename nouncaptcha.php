@@ -17,6 +17,7 @@ Utils::debug(__METHOD__, [
 	'is_blog_admin' => is_blog_admin(),
 	'pagenow' => isset($GLOBALS['pagenow']) ? $GLOBALS['pagenow'] : 'null',
 	'request_method'=>$_SERVER['REQUEST_METHOD'],
+	'nouncaptcha' => (isset($_POST['nouncaptcha']) ? $_POST['nouncaptcha'] : 'null'),
 ]);
 
 if( is_blog_admin() )

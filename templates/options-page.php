@@ -34,9 +34,9 @@ NounCaptcha admin options page
 						<tr valign="top">
 							<th scope="row"><?php _e( 'Activate on registration form' ); ?></th>
 							<td><input type="checkbox"
-								id="<?php echo Plugin::NAME ?>[on_form_registration]"
-								name="<?php echo Plugin::NAME ?>[on_form_registration]" value="1"
-								<?php checked( '1', $this->get_option('on_form_registration') ); ?> />
+									name="<?php echo Plugin::NAME ?>[on_form_registration]" value="1"
+									<?php checked( '1', $this->get_option('on_form_registration') ); ?>
+								/>
 								<p class="description">
 									<?php _e( 'NounCaptcha can be activated on registration form' ); ?>
 								</p>
@@ -48,28 +48,30 @@ NounCaptcha admin options page
 						<tr valign="top">
 							<th scope="row"><?php _e( 'Activate on comment' ); ?></th>
 							<td><input type="checkbox"
-								id="<?php echo Plugin::NAME ?>[on_comment]"
-								name="<?php echo Plugin::NAME ?>[on_comment]" value="1"
-								<?php checked( '1', $this->get_option('on_comment') ); ?> />
+									name="<?php echo Plugin::NAME ?>[on_comment]" value="1"
+									<?php \checked( '1', $this->get_option('on_comment') ); ?>
+								/>
 								<p class="description">
 									<?php _e( 'NounCaptcha can be activated on comment' ); ?>
 								</p>
 							</td>
 						</tr>
 
-						<!-- Option: noun_name -->
+						<!-- Option: nouns -->
 
 						<tr valign="top">
 							<th scope="row"><?php _e( 'Drawning theme' ); ?></th>
 							<td>
-								<select id="<?php echo Plugin::NAME ?>[noun_name]"
-									name="<?php echo Plugin::NAME ?>[noun_name]">
-									<option value="" class="dummy_option">select a drawings theme ...</option>
+								<select 
+									name="<?php echo Plugin::NAME ?>[nouns][]"
+									multiple="multiple"
+									>
 									<?php
+									$nouns = $this->get_option('nouns');
 									foreach( $this->getNounsNames() as $name )
 									{ ?>
 										<option value="<?php echo $name ?>"
-											<?php if( $name == $this->get_option('noun_name') ) echo 'selected="selected"' ; ?>
+											<?php echo (in_array($name, $nouns) ? 'selected="selected"':'') ?>
 										>
 											<?php echo $name; ?>
 										</option>
@@ -78,7 +80,7 @@ NounCaptcha admin options page
 									?>
 							</select>
 								<p class="description">
-									<?php _e( 'Select a drawings theme, by author' ); ?>
+									<?php _e( 'Select one or more drawing theme' ); ?>
 								</p>
 							</td>
 						</tr>

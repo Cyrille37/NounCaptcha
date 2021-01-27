@@ -105,6 +105,8 @@ class Back extends Plugin
         if( ! current_user_can('manage_options') )
             wp_die(__('Argh!'));
 
+        //Utils::debug( __METHOD__, 'nouns:',$this->get_option('nouns') );
+
         require_once $this->templates_dir  . '/options-page.php';
     }
 
