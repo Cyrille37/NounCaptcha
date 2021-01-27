@@ -19,7 +19,6 @@ class Back extends Plugin
         add_action('admin_init', [$this, 'wp_admin_init'] );
         add_action('admin_menu', [$this, 'wp_admin_menu']);
 
-
         // Only on option page
         if( ! isset($GLOBALS['pagenow']) )
             return ;

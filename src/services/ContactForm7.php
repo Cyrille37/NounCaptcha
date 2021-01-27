@@ -33,7 +33,6 @@ class ContactForm7
 
         if( is_blog_admin() )
         {
-            add_action( 'wpcf7_init', array( $this, 'wpcf7_init') );
             // adds the Tag to Contact form 7 plugin
     		add_action( 'admin_init', [$this, 'wpcf7_add_tag_generator'], 45 );
 
@@ -43,6 +42,7 @@ class ContactForm7
         }
         else
         {
+            //add_action( 'wpcf7_init', array( $this, 'wpcf7_init') );
         }
 
     }
@@ -60,12 +60,12 @@ class ContactForm7
 
     public function wpcf7_init()
     {
-        if (function_exists('wpcf7_add_form_tag'))
-        wpcf7_add_form_tag( Plugin::NAME, array( $this, 'wpcf7_wpcaptcha_shortcode_handler' ), true );
-     else if (function_exists('wpcf7_add_shortcode'))
-        wpcf7_add_shortcode( Plugin::NAME, array( $this, 'wpcf7_wpcaptcha_shortcode_handler' ), true );
-     else
-        throw new Exception( 'functions wpcf7_add_form_tag and wpcf7_add_shortcode not found.' );
+        if(function_exists('wpcf7_add_form_tag') )
+            wpcf7_add_form_tag( Plugin::NAME, array( $this, 'wpcf7_wpcaptcha_shortcode_handler' ), true );
+        else if (function_exists('wpcf7_add_shortcode'))
+            wpcf7_add_shortcode( Plugin::NAME, array( $this, 'wpcf7_wpcaptcha_shortcode_handler' ), true );
+        /*else
+            throw new Exception( 'functions wpcf7_add_form_tag and wpcf7_add_shortcode not found.' );*/
 
     }
 
