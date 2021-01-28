@@ -101,23 +101,41 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
             }
         }
 
+        //
         // Pioche une question
+        //
 
         $i = rand(0,count($questions)-1) ;
-        /*Utils::debug(__METHOD__, [
-            count($questions), $i, 
-        ]);*/
         $noun = $questions[ $i ][1];
+
         $question = $noun['questions'][ $questions[$i][0] ];
+        // Keep some other data
+        $question['attribution'] = $noun['attribution'];
+        $question['folder'] = \substr( $noun['folder'], strlen(ABSPATH)-1 );
+        // Add good answer image
+        $question['images'][] = $question['answer'];
+        // Randomize images
+        shuffle($question['images']);
+        // Then retrieve the answer one
+        for( $i=0; $i<count($question['images']); $i++ )
+        {
+            if( $question['images'][$i] == $question['answer'] )
+            {
+                // Encrypt the answer's index
+                $question['response'] = Utils::encrypt( $i, NONCE_KEY );
+                break ;
+            }
+        }
+        Utils::debug(__METHOD__,[
+            'WP_CONTENT_DIR' => WP_CONTENT_DIR,
+            $question,
+        ]);
+        unset($question['answer']);
 
-        $h = $question['text'] ;
-
-/*
         ob_start();
         require_once $this->templates_dir . '/captcha-html.php' ;
         $h = ob_get_contents() ;
         ob_end_clean();
-*/
 
         if( !empty($form) )
         {
@@ -255,7 +273,7 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
             $noun = \array_replace_recursive($noun, $overide);
         }
 
-        $noun['folder'] = $folder ;
+        $noun['folder'] = $ff ;
         return $noun ;
     }
 

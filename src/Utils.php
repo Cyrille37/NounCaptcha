@@ -253,4 +253,75 @@ class Utils
         return sprintf(_n('il y a 1 an', 'il y a %d ans', $years_ago), $years_ago);
     }
 
+    //const OPENSSL_CIPHER = OPENSSL_CIPHER_AES_128_CBC ;
+    const OPENSSL_CIPHER = 'aes-128-ctr' ;
+
+    /**
+     * options is a bitwise disjunction of the flags
+     * - OPENSSL_RAW_DATA (bool) If OPENSSL_RAW_DATA is set in the openssl_encrypt() or openssl_decrypt(), the returned data is returned as-is. When it is not specified, Base64 encoded data is returned to the caller. 
+     * @see https://www.php.net/manual/en/openssl.constants.other.php
+     */
+    const OPENSSL_OPTIONS = OPENSSL_RAW_DATA ;
+
+    /**
+     * Encrypts (but does not authenticate) a message
+     * 
+     * @param string $message - plaintext message
+     * @param string $key - encryption key (raw binary expected)
+     * @param boolean $encode - set to TRUE to return a base64-encoded 
+     * @return string (raw binary)
+     */
+    public static function encrypt($message, $key, $encode = true)
+    {
+        $nonceSize = openssl_cipher_iv_length(self::OPENSSL_CIPHER);
+        $nonce = openssl_random_pseudo_bytes($nonceSize);
+
+        $ciphertext = openssl_encrypt(
+            $message,
+            self::OPENSSL_CIPHER,
+            $key,
+            self::OPENSSL_OPTIONS,
+            $nonce
+        );
+
+        // Now let's pack the IV and the ciphertext together
+        // Naively, we can just concatenate
+        if ($encode) {
+            return base64_encode($nonce.$ciphertext);
+        }
+        return $nonce.$ciphertext;
+    }
+
+    /**
+     * Decrypts (but does not verify) a message
+     * 
+     * @param string $message - ciphertext message
+     * @param string $key - encryption key (raw binary expected)
+     * @param boolean $encoded - are we expecting an encoded string?
+     * @return string
+     */
+    public static function decrypt($message, $key, $encoded = true)
+    {
+        if ($encoded) {
+            $message = base64_decode($message, true);
+            if ($message === false) {
+                throw new Exception('Encryption failure');
+            }
+        }
+
+        $nonceSize = openssl_cipher_iv_length(self::OPENSSL_CIPHER);
+        $nonce = mb_substr($message, 0, $nonceSize, '8bit');
+        $ciphertext = mb_substr($message, $nonceSize, null, '8bit');
+
+        $plaintext = openssl_decrypt(
+            $ciphertext,
+            self::OPENSSL_CIPHER,
+            $key,
+            self::OPENSSL_OPTIONS,
+            $nonce
+        );
+
+        return $plaintext;
+    }
+
 }

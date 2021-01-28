@@ -38,6 +38,7 @@ class ContactForm7
     public function __construct( Plugin $nounCaptcha )
     {
         Utils::debug(__METHOD__);
+
 		$this->nc = $nounCaptcha ;
 
         if( is_blog_admin() )
@@ -58,7 +59,7 @@ class ContactForm7
         //add_filter( 'wpcf7_form_elements', [$this,'wpcf7_form_elements'] );
 		// validate the captcha answer on contact form 7
 		//\add_filter( 'wpcf7_validate_wpcaptcha', [$this, 'wpcf7_validate_wpcaptcha'], 10, 2 );
-    }
+    	}
 
     }
 
@@ -108,7 +109,7 @@ class ContactForm7
 		$atts['name'] = $tag->name;
 		$atts['value'] = '';
 		$atts = wpcf7_format_atts( $atts );
-		
+
 		return sprintf( '<span class="wpcf7-form-control-wrap %1$s">'
 			//. WP_CAPTCHA()->c4wp_object->c4wp_generate_captcha()
 			. $this->nc->captchaHtml()

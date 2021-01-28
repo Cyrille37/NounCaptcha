@@ -27,16 +27,21 @@ class Comment
         }
         else
         {
-            add_filter( 'comment_form_field_comment', [$this, 'form']);
+            add_filter( 'comment_form_defaults', [$this, 'wp_comment_form_defaults']);
+
             // pre_comment_on_post
             add_filter( 'preprocess_comment', [$this,'check'], 1 );       
         }
         
     }
 
-    public function form()
+    public function wp_comment_form_defaults( Array $form )
     {
-        return $this->nc->captchaHtml() ;
+        //Utils::debug(__METHOD__, $form );
+
+        $form['fields']['captcha'] = $this->nc->captchaHtml();
+
+        return $form ;
     }
 
     public function check()
