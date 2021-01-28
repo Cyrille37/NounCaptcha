@@ -23,18 +23,28 @@ use Cyrille\NounCaptcha\Plugin ;
  */
 class ContactForm7
 {
-    public function __construct()
+	/**
+	 * Undocumented variable
+	 *
+	 * @var Plugin
+	 */
+	protected $nc ;
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param Plugin $nounCaptcha
+	 */
+    public function __construct( Plugin $nounCaptcha )
     {
         Utils::debug(__METHOD__);
-
-        //add_filter( 'wpcf7_form_elements', [$this,'wpcf7_form_elements'] );
-		// validate the captcha answer on contact form 7
-		//\add_filter( 'wpcf7_validate_wpcaptcha', [$this, 'wpcf7_validate_wpcaptcha'], 10, 2 );
+		$this->nc = $nounCaptcha ;
 
         if( is_blog_admin() )
         {
-            // adds the Tag to Contact form 7 plugin
-    		add_action( 'admin_init', [$this, 'wpcf7_add_tag_generator'], 45 );
+			// adds the Tag to Contact form 7 plugin
+			// to display in Form editor
+    		add_action( 'admin_init', [$this, 'wpcf7_admin_register_tag'], 45 );
 
         }
         else if( is_admin() )
@@ -42,8 +52,13 @@ class ContactForm7
         }
         else
         {
-            //add_action( 'wpcf7_init', array( $this, 'wpcf7_init') );
-        }
+			// adds the required HTML for the captcha to the contact form 7		
+			add_action( 'wpcf7_init', array( $this, 'wpcf7_init') );
+
+        //add_filter( 'wpcf7_form_elements', [$this,'wpcf7_form_elements'] );
+		// validate the captcha answer on contact form 7
+		//\add_filter( 'wpcf7_validate_wpcaptcha', [$this, 'wpcf7_validate_wpcaptcha'], 10, 2 );
+    }
 
     }
 
@@ -61,22 +76,54 @@ class ContactForm7
     public function wpcf7_init()
     {
         if(function_exists('wpcf7_add_form_tag') )
-            wpcf7_add_form_tag( Plugin::NAME, array( $this, 'wpcf7_wpcaptcha_shortcode_handler' ), true );
+            wpcf7_add_form_tag( Plugin::NAME, array( $this, 'wpcf7_shortcode_handler' ), true );
         else if (function_exists('wpcf7_add_shortcode'))
-            wpcf7_add_shortcode( Plugin::NAME, array( $this, 'wpcf7_wpcaptcha_shortcode_handler' ), true );
+            wpcf7_add_shortcode( Plugin::NAME, array( $this, 'wpcf7_shortcode_handler' ), true );
         /*else
             throw new Exception( 'functions wpcf7_add_form_tag and wpcf7_add_shortcode not found.' );*/
 
     }
 
-    	/**
-	 * Create WP Captcha " Tag " in Contact Form 7 Plugin.
-	 * @package  WP Captcha
-	 * @version  1.0.0
-	 * @author   Devnath verma <devnathverma@gmail.com>
-	 */
-	public function wpcf7_add_tag_generator() {
+	public function wpcf7_shortcode_handler( $tag )
+	{
+		$tag = new \WPCF7_FormTag( $tag );
+
+		if ( empty( $tag->name ) )
+			return '';
+
+		$validation_error = wpcf7_get_validation_error( $tag->name );
+		$class = wpcf7_form_controls_class( $tag->type );
+
+		if ( $validation_error )
+		$class .= ' wpcf7-not-valid';
+
+		$atts = array();
+		$atts['size'] = 2;
+		$atts['maxlength'] = 2;
+		$atts['class'] = $tag->get_class_option( $class );
+		$atts['id'] = $tag->get_option( 'id', 'id', true );
+		$atts['tabindex'] = $tag->get_option( 'tabindex', 'int', true );
+		$atts['aria-required'] = 'true';
+		$atts['type'] = 'text';
+		$atts['name'] = $tag->name;
+		$atts['value'] = '';
+		$atts = wpcf7_format_atts( $atts );
 		
+		return sprintf( '<span class="wpcf7-form-control-wrap %1$s">'
+			//. WP_CAPTCHA()->c4wp_object->c4wp_generate_captcha()
+			. $this->nc->captchaHtml()
+			. '%3$s</span><input type="hidden" name="' . $tag->name . '-sn" />',
+			$tag->name,
+			$atts,
+			$validation_error
+		);
+	}
+
+	/**
+	 * Register NounCaptcha button ("Tag attributes") in ContactForm7 editor.
+	 */
+	public function wpcf7_admin_register_tag()
+	{
 		if ( ! function_exists( 'wpcf7_add_tag_generator' ) )
 		    return;
 
@@ -84,19 +131,16 @@ class ContactForm7
             Plugin::NAME,
             __( 'Noun Captcha', Plugin::NAME ),
             Plugin::NAME,
-            [$this, 'wpcf7_tg_pane']
+            [$this, 'wpcf7_admin_render_tag']
         );
-	
 	}
 	
 	/**
-	 * Create Noun Captcha "Tag attributes" in contact form 7 Plugin.
-	 * @package  WP Captcha
-	 * @version  1.0.0
-	 * @author   Devnath verma <devnathverma@gmail.com>
+	 * Create NounCaptcha button ("Tag attributes") in ContactForm7 editor.
 	 */
-	public function wpcf7_tg_pane( $contact_form ) { ?>
-		
+	public function wpcf7_admin_render_tag( $contact_form )
+	{
+		?>
 		<div class="control-box">
 			<fieldset>
 				<table class="form-table">

@@ -2,7 +2,8 @@
 namespace Cyrille\NounCaptcha ;
 
 require_once(__DIR__.'/Utils.php');
-require_once(__DIR__.'/ServicesFactory.php');
+require_once(__DIR__.'/Services/Comment.php');
+require_once(__DIR__.'/Services/ContactForm7.php');
 
 /**
  * 
@@ -43,7 +44,21 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
         $this->nouns_dir = $this->plugin_dir.'/nouns';
         $this->nouns_url = $this->plugin_url.'/nouns';
 
-        new ServicesFactory( $this );
+        $this->createServices();
+    }
+
+    protected function createServices()
+    {
+        if( $this->get_option('on_comment') )
+        {
+            new Services\Comment( $this );
+        }
+
+        if( $this->get_option('on_wpcf7') )
+        {
+            new Services\ContactForm7( $this );
+        }
+
     }
 
     /**
@@ -68,6 +83,16 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
             $opts = [];
         $opts[$name] = $value ;
 	    update_option(Plugin::NAME,$opts);
+    }
+
+    public function captchaHtml()
+    {
+        return 'Coucou';
+    }
+
+    public function captchaCheck()
+    {
+
     }
 
     /**

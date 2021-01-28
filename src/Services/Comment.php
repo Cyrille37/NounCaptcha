@@ -2,12 +2,22 @@
 namespace Cyrille\NounCaptcha\Services ;
 
 use Cyrille\NounCaptcha\Utils ;
+use Cyrille\NounCaptcha\Plugin ;
 
 class Comment
 {
-    public function __construct()
+	/**
+	 * Undocumented variable
+	 *
+	 * @var Plugin
+	 */
+	protected $nc ;
+
+    public function __construct( Plugin $nounCaptcha )
     {
         Utils::debug(__METHOD__);
+
+		$this->nc = $nounCaptcha ;
 
         if( is_blog_admin() )
         {
@@ -22,6 +32,16 @@ class Comment
             add_filter( 'preprocess_comment', [$this,'check'], 1 );       
         }
         
+    }
+
+    public function form()
+    {
+        return $this->nc->captchaHtml() ;
+    }
+
+    public function check()
+    {
+
     }
 
 }
