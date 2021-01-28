@@ -85,9 +85,45 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
 	    update_option(Plugin::NAME,$opts);
     }
 
-    public function captchaHtml()
+    public function captchaHtml( $form = null )
     {
-        return 'Coucou';
+        // Charge les questions des nouns actifs.
+
+        $questions = [];
+        foreach( $this->get_option('nouns', []) as $name )
+        {
+            $noun = $this->getNoun( $name );
+            if( $noun == null )
+                continue ;
+            for( $i=0; $i<count($noun['questions']); $i ++ )
+            {
+                $questions[] = [$i, $noun] ;
+            }
+        }
+
+        // Pioche une question
+
+        $i = rand(0,count($questions)-1) ;
+        /*Utils::debug(__METHOD__, [
+            count($questions), $i, 
+        ]);*/
+        $noun = $questions[ $i ][1];
+        $question = $noun['questions'][ $questions[$i][0] ];
+
+        $h = $question['text'] ;
+
+/*
+        ob_start();
+        require_once $this->templates_dir . '/captcha-html.php' ;
+        $h = ob_get_contents() ;
+        ob_end_clean();
+*/
+
+        if( !empty($form) )
+        {
+            $h = $form . $h ;
+        }
+        return $h ;
     }
 
     public function captchaCheck()
@@ -101,12 +137,41 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
      */
     public function getNounsFolders()
     {
-        $folders = [
-            $this->nouns_dir
-        ];
-        if( \file_exists( get_stylesheet_directory().'/nouns') )
-            $folders[] = get_stylesheet_directory().'/nouns' ;
+        static $folders ;
+        if( empty($folders) )
+        {
+            $folders = [
+                $this->nouns_dir
+            ];
+            if( \file_exists( get_stylesheet_directory().'/nouns') )
+                $folders[] = get_stylesheet_directory().'/nouns' ;
+    
+        }
         return $folders ;
+    }
+
+    /**
+     * Get current user language
+     *
+     * @return string
+     */
+    protected function getLang()
+    {
+        return  \substr( get_locale(), 0, 2 );
+    }
+
+    public function &getNoun( $name )
+    {
+        $lang = $this->getLang();
+
+        foreach( $this->getNounsFolders() as $folder )
+        {
+            // Load a Noun
+            $noun = $this->loadNoun( $folder, $name, $lang );
+            if( $noun != null )
+                return $noun ;
+        }
+        return null ;
     }
 
     /**
@@ -124,10 +189,10 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
         if( !empty($nouns) )
             return $nouns ;
 
-        $lang = \substr( get_locale(), 0, 2 );
+        $lang = $this->getLang();
 
         Utils::debug(__METHOD__,[
-            get_stylesheet_directory(),
+            //get_stylesheet_directory(),
         ]);
 
         foreach( $this->getNounsFolders() as $folder )
@@ -139,11 +204,13 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
                     //echo "$f\n";
                     if( $f[0] == '.' )
                         continue ;
-                    $ff = $folder.'/'.$f ;
-                    if( ! is_dir( $ff ) )
-                        continue ;
 
                     // Load a Noun
+                    $n = $this->loadNoun( $folder, $f, $lang );
+                    if( $n != null )
+                        $nouns[$f] = $n ;
+
+                    /*
                     $captcha_file = $ff.'/captchas.php' ;
                     if( ! file_exists($captcha_file ))
                         continue ;
@@ -155,12 +222,41 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
                     {
                         $overide = require($captcha_file);
                         $nouns[$f] = \array_replace_recursive($nouns[$f], $overide);
-                    }
+                    }*/
                 }
             }
         }
         //Utils::debug(__METHOD__,$nouns);
         return $nouns ;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param [type] $folder
+     * @param [type] $name
+     * @return void
+     */
+    protected function loadNoun( $folder, $name, $lang )
+    {
+        $ff = $folder.'/'.$name ;
+        if( ! is_dir( $ff ) )
+            return null ;
+        $captcha_file = $ff.'/captchas.php' ;
+        if( ! file_exists($captcha_file ))
+            return null ;
+        $noun = require($captcha_file) ;
+
+        // Overide language's values (like question text) for this Noun
+        $captcha_file = $ff.'/captchas_'.$lang.'.php' ;
+        if( file_exists($captcha_file ))
+        {
+            $overide = require($captcha_file);
+            $noun = \array_replace_recursive($noun, $overide);
+        }
+
+        $noun['folder'] = $folder ;
+        return $noun ;
     }
 
     public function getNounsNames()
