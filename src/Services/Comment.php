@@ -27,15 +27,15 @@ class Comment
         }
         else
         {
-            add_filter( 'comment_form_defaults', [$this, 'wp_comment_form_defaults']);
-
-            // pre_comment_on_post
-            add_filter( 'preprocess_comment', [$this,'check'], 1 );       
+            // add captcha to comment form
+            add_filter( 'comment_form_defaults', [$this, 'form']);
+            // check captcha at comment form submit
+            add_filter( 'preprocess_comment', [$this,'check'] );       
         }
         
     }
 
-    public function wp_comment_form_defaults( Array $form )
+    public function form( Array $form )
     {
         //Utils::debug(__METHOD__, $form );
 
@@ -44,9 +44,27 @@ class Comment
         return $form ;
     }
 
-    public function check()
+    public function check( $comment )
     {
+        if ( empty( $_POST ) )
+            return ;
 
+        // skip captcha for comment replies from the admin menu
+        if ( isset( $_POST['action'] ) && $_POST['action'] == 'replyto-comment'
+            && ( check_ajax_referer( 'replyto-comment', '_ajax_nonce', false )
+                || check_ajax_referer( 'replyto-comment', '_ajax_nonce-replyto-comment', false ) )
+            )
+        {
+			return $comment;
+		}
+
+        if( $this->nc->captchaCheck($_POST) )
+        {
+            return $comment ;
+        }
+
+        //$e = new \WP_Error() and redirect is not in WP world :-(
+        wp_die( __('Invalid captcha') );
     }
 
 }

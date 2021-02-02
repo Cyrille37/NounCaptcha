@@ -7,9 +7,9 @@
  * Around Captcha
  * - [Adding captcha to Contact Form 7 ](https://www.sterupdesign.com/dev/wordpress/plugins/flexible-captcha/documentation/adding-captcha-to-contact-form-7/)
  * - https://gist.github.com/jrobinsonc/6d70feac58bfa24a93d19f28303f4e5a
- * Around validation
- * - https://contactform7.com/2015/03/28/custom-validation/
- * 
+ * Around Contact Form 7
+ * - [How To: Add a New Button Tag to Contact Form 7 Plugin](https://www.ryansutana.name/2020/04/how-to-add-contact-form-7-form-button-tag/)
+ * - [Custom validation](https://contactform7.com/2015/03/28/custom-validation/)
  */
 
 namespace Cyrille\NounCaptcha\Services ;
@@ -18,7 +18,7 @@ use Cyrille\NounCaptcha\Utils ;
 use Cyrille\NounCaptcha\Plugin ;
 
 /**
- * 
+ * Require Contact Form 7 version > 4.6
  * 
  */
 class ContactForm7
@@ -56,6 +56,11 @@ class ContactForm7
 			// adds the required HTML for the captcha to the contact form 7		
 			add_action( 'wpcf7_init', array( $this, 'wpcf7_init') );
 
+			// validate the captcha answer on contact form 7
+			add_filter( 'wpcf7_validate_nouncaptcha*', array( $this, 'wpcf7_validate_nouncaptcha' ), 10, 2 );
+			// adds the error messages fields for the captcha to the contact form 7 plugin
+			add_filter( 'wpcf7_messages', array( $this, 'wpcf7_messages' ) );
+
         //add_filter( 'wpcf7_form_elements', [$this,'wpcf7_form_elements'] );
 		// validate the captcha answer on contact form 7
 		//\add_filter( 'wpcf7_validate_wpcaptcha', [$this, 'wpcf7_validate_wpcaptcha'], 10, 2 );
@@ -63,30 +68,59 @@ class ContactForm7
 
     }
 
-    public function wpcf7_form_elements( $form )
-    {
-        //Utils::debug(__METHOD__, ['form'=>$form]);
-        return $form ;
-    }
-    public function wpcf7_validate_wpcaptcha( $result, $tag )
-    {
-        //Utils::debug(__METHOD__, ['form'=>$form]);
-        return $result ;
-    }
-
     public function wpcf7_init()
     {
-        if(function_exists('wpcf7_add_form_tag') )
-            wpcf7_add_form_tag( Plugin::NAME, array( $this, 'wpcf7_shortcode_handler' ), true );
-        else if (function_exists('wpcf7_add_shortcode'))
-            wpcf7_add_shortcode( Plugin::NAME, array( $this, 'wpcf7_shortcode_handler' ), true );
+        //if(function_exists('wpcf7_add_form_tag') )
+		wpcf7_add_form_tag( Plugin::NAME.'*', array( $this, 'wpcf7_shortcode_handler' ), true );
+
+		// Deprecated since 4.6
+		//else if (function_exists('wpcf7_add_shortcode'))
+        //    wpcf7_add_shortcode( Plugin::NAME, array( $this, 'wpcf7_shortcode_handler' ), true );
         /*else
             throw new Exception( 'functions wpcf7_add_form_tag and wpcf7_add_shortcode not found.' );*/
 
     }
 
+	public function wpcf7_validate_nouncaptcha( $result, $tag )
+	{
+		Utils::debug(__METHOD__, [
+			'result'=>$result,
+			'tag'=>$tag,
+		]);
+
+		$result->invalidate( $tag, wpcf7_get_message( 'c4wp_wrong_captcha' ) );
+
+		return $result;
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param array $messages
+	 * @return array
+	 */
+	public function wpcf7_messages( $messages )
+	{
+		return array_merge(
+			$messages,
+			array(
+				'nouncaptcha_empty'	 => array(
+					'description'	 => __( 'Your captcha is empty. Please try again.', 'wp-captcha' ),
+					'default'		 => '???',
+				),
+				'nouncaptcha_invalid'	 => array(
+					'description'	 => __( 'You have entered an incorrect CAPTCHA. Please try again.', 'wp-captcha' ),
+					'default'		 => '???',
+				)
+			)
+		);
+	}
+
 	public function wpcf7_shortcode_handler( $tag )
 	{
+		Utils::debug(__METHOD__, [
+			'tag'=>$tag,
+		]);
 		$tag = new \WPCF7_FormTag( $tag );
 
 		if ( empty( $tag->name ) )
@@ -96,26 +130,18 @@ class ContactForm7
 		$class = wpcf7_form_controls_class( $tag->type );
 
 		if ( $validation_error )
-		$class .= ' wpcf7-not-valid';
+			$class .= ' wpcf7-not-valid';
 
-		$atts = array();
-		$atts['size'] = 2;
-		$atts['maxlength'] = 2;
-		$atts['class'] = $tag->get_class_option( $class );
-		$atts['id'] = $tag->get_option( 'id', 'id', true );
-		$atts['tabindex'] = $tag->get_option( 'tabindex', 'int', true );
-		$atts['aria-required'] = 'true';
-		$atts['type'] = 'text';
-		$atts['name'] = $tag->name;
-		$atts['value'] = '';
-		$atts = wpcf7_format_atts( $atts );
-
-		return sprintf( '<span class="wpcf7-form-control-wrap %1$s">'
+		Utils::debug(__METHOD__, [
+			'tag'=>$tag,
+			'$validation_error' => $validation_error,
+		]);
+	
+		return sprintf( '<div class="wpcf7-form-control-wrap %1$s">'
 			//. WP_CAPTCHA()->c4wp_object->c4wp_generate_captcha()
-			. $this->nc->captchaHtml()
-			. '%3$s</span><input type="hidden" name="' . $tag->name . '-sn" />',
+			. $this->nc->captchaHtml( null, $class )
+			. '%2$s</div>',
 			$tag->name,
-			$atts,
 			$validation_error
 		);
 	}
@@ -146,6 +172,18 @@ class ContactForm7
 			<fieldset>
 				<table class="form-table">
 					<tbody>
+						<tr>
+							<th></th>
+							<td>
+							<label>
+							<input type="checkbox" name="required"
+									id="tag-generator-panel-<?php echo Plugin::NAME ?>-required"
+									checked="checked" readonly="readonly" disabled="disabled"
+									value="on" />
+								Champ obligatoire
+							</label>
+							</td>
+						</tr>
 						<tr>
 							<th scope="row">
 								<label for="tag-generator-panel-<?php echo Plugin::NAME ?>-name"><?php _e( 'Name', 'contact-form-7' ); ?></label>

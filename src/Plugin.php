@@ -85,7 +85,7 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
 	    update_option(Plugin::NAME,$opts);
     }
 
-    public function captchaHtml( $form = null )
+    protected function computeQuestion()
     {
         // Charge les questions des nouns actifs.
 
@@ -122,15 +122,31 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
             if( $question['images'][$i] == $question['answer'] )
             {
                 // Encrypt the answer's index
-                $question['response'] = Utils::encrypt( $i, NONCE_KEY );
-                break ;
+                //$question['response'] = Utils::encrypt( $i, NONCE_KEY );
+                //break ;
+                $question['answer'] = $i ;
+                return $question ;
             }
         }
-        Utils::debug(__METHOD__,[
+        return null ;
+    }
+
+    public function captchaHtml( $form = null, $class = null )
+    {
+
+        $question = $this->computeQuestion();
+
+        /*Utils::debug(__METHOD__,[
             'WP_CONTENT_DIR' => WP_CONTENT_DIR,
             $question,
-        ]);
-        unset($question['answer']);
+        ]);*/
+        //unset($question['answer']);
+
+        $data = [
+            'q' => $question['answer'],
+        ];
+        // Json encoding need heavier load but php serialize is less secure with data that comes for outside.
+        $question['response'] = Utils::encrypt( \json_encode($data), NONCE_KEY );
 
         ob_start();
         require_once $this->templates_dir . '/captcha-html.php' ;
@@ -144,9 +160,23 @@ define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
         return $h ;
     }
 
-    public function captchaCheck()
+    /**
+     * Check input data for valid Captcha response.
+     *
+     * @return bool
+     */
+    public function captchaCheck( &$input )
     {
-
+        if( empty($input) || (!isset($input['nouncaptcha_response'])) || !isset($input['nouncaptcha_image']) )
+            return false ;
+        // Decrypt response data
+        $response = \json_decode( Utils::decrypt( $input['nouncaptcha_response'], NONCE_KEY ) );
+        if( empty($response) )
+            return false ;
+        // Check image response
+        if(  (intval($input['nouncaptcha_image'])-1) != $response->q )
+            return false ;
+        return true ;
     }
 
     /**

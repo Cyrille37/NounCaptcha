@@ -1,13 +1,15 @@
 
 <script type="text/javascript">
-var nouncaptcha_imgs ;
-jQuery(document).ready(function($) {
-	nouncaptcha_imgs = jQuery('#nouncaptcha img.nouncaptcha_img');
-	nouncaptcha_imgs.click( function(e) {
-		nouncaptcha_imgs.removeClass('nouncaptcha_img_selected');
-		var o = jQuery(this);
-		o.addClass('nouncaptcha_img_selected');
-		jQuery('#nouncaptcha_response').val( o.attr('data-pos') );
+jQuery(document).ready(function($)
+{
+	var nouncaptcha_imgs ;
+	nouncaptcha_imgs = $('#nouncaptcha ul img');
+	nouncaptcha_imgs.click( function(e)
+	{
+		nouncaptcha_imgs.removeClass('nouncaptcha-selected');
+		var o = $(this);
+		o.addClass('nouncaptcha-selected');
+		$('#nouncaptcha_image').val( o.attr('data-pos') );
 	} );
 
 });
@@ -34,8 +36,11 @@ jQuery(document).ready(function($) {
 		}
 		?>
 	</ul>
-	<input type="hidden" name="nouncaptcha_code" id="nouncaptcha_code" value="<?php echo $question['response'] ?>" />
-	<input type="hidden" name="nouncaptcha_response" id="nouncaptcha_response" value="" />
+	<input type="hidden" name="nouncaptcha_response" id="nouncaptcha_response" value="<?php echo $question['response'] ?>" />
+	<input type="hidden" name="nouncaptcha_image" id="nouncaptcha_image"
+		value=""
+		<?php echo (!empty($class) ? 'class="'.$class.'"' : '' ) ?>
+		aria-required="true" />
 
 	<span class="attribution tooltip-box">
 		© icons

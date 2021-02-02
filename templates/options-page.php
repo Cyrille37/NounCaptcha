@@ -39,6 +39,7 @@ NounCaptcha admin options page
 									<?php checked( '1', $this->get_option('on_registration') ); ?>
 									/>
 								<p class="description">
+								TODO
 									<?php _e( 'NounCaptcha can be activated on Wordpress registration form' ); ?>
 								</p>
 							</td>
@@ -69,6 +70,7 @@ NounCaptcha admin options page
 									<?php \checked( '1', $this->get_option('on_wpcf7') ); ?>
 									/>
 								<p class="description">
+								TODO
 									<?php _e( 'NounCaptcha can be activated on Contact Form7' ); ?>
 								</p>
 							</td>
