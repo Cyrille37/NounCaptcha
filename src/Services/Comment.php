@@ -64,7 +64,7 @@ class Comment
         }
 
         //$e = new \WP_Error() and redirect is not in WP world :-(
-        wp_die( __('Invalid captcha') );
+        wp_die( __('Invalid captcha', Plugin::NAME) );
     }
 
 }

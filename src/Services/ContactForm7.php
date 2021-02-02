@@ -83,13 +83,21 @@ class ContactForm7
 
 	public function wpcf7_validate_nouncaptcha( $result, $tag )
 	{
+		$tag = new \WPCF7_FormTag( $tag );
+
 		Utils::debug(__METHOD__, [
 			'result'=>$result,
 			'tag'=>$tag,
 		]);
 
-		$result->invalidate( $tag, wpcf7_get_message( 'c4wp_wrong_captcha' ) );
-
+		if( $this->nc->captchaCheck($_POST) )
+        {
+			$result['valid'] = true;
+        }
+		else
+		{
+			$result->invalidate( $tag, wpcf7_get_message('nouncaptcha_invalid') );
+		}
 		return $result;
 	}
 
@@ -104,13 +112,9 @@ class ContactForm7
 		return array_merge(
 			$messages,
 			array(
-				'nouncaptcha_empty'	 => array(
-					'description'	 => __( 'Your captcha is empty. Please try again.', 'wp-captcha' ),
-					'default'		 => '???',
-				),
 				'nouncaptcha_invalid'	 => array(
-					'description'	 => __( 'You have entered an incorrect CAPTCHA. Please try again.', 'wp-captcha' ),
-					'default'		 => '???',
+					'description'	 => __( 'Invalid captcha', Plugin::NAME ),
+					'default'		 => 'Invalid captcha',
 				)
 			)
 		);
@@ -118,9 +122,9 @@ class ContactForm7
 
 	public function wpcf7_shortcode_handler( $tag )
 	{
-		Utils::debug(__METHOD__, [
+		/*Utils::debug(__METHOD__, [
 			'tag'=>$tag,
-		]);
+		]);*/
 		$tag = new \WPCF7_FormTag( $tag );
 
 		if ( empty( $tag->name ) )
@@ -133,17 +137,14 @@ class ContactForm7
 			$class .= ' wpcf7-not-valid';
 
 		Utils::debug(__METHOD__, [
-			'tag'=>$tag,
-			'$validation_error' => $validation_error,
+			'validation_error' => $validation_error,
 		]);
-	
-		return sprintf( '<div class="wpcf7-form-control-wrap %1$s">'
-			//. WP_CAPTCHA()->c4wp_object->c4wp_generate_captcha()
-			. $this->nc->captchaHtml( null, $class )
-			. '%2$s</div>',
-			$tag->name,
-			$validation_error
-		);
+
+		return 
+			$this->nc->captchaHtml( null, $class )
+			// WPCF7 will add validation error in this wrapper
+			. sprintf( '<span class="wpcf7-form-control-wrap %1$s"></span>', $tag->name)
+			;
 	}
 
 	/**

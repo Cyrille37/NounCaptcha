@@ -15,7 +15,9 @@ jQuery(document).ready(function($)
 });
 </script>
 
-<div id="nouncaptcha">
+<div id="nouncaptcha"
+	<?php echo (!empty($class) ? 'class="'.$class.'"' : '' ) ?>
+	>
 	<label>
 		<?php echo $question['text'] ?>
 		<span class="required">*</span>
@@ -38,9 +40,7 @@ jQuery(document).ready(function($)
 	</ul>
 	<input type="hidden" name="nouncaptcha_response" id="nouncaptcha_response" value="<?php echo $question['response'] ?>" />
 	<input type="hidden" name="nouncaptcha_image" id="nouncaptcha_image"
-		value=""
-		<?php echo (!empty($class) ? 'class="'.$class.'"' : '' ) ?>
-		aria-required="true" />
+		value="" aria-required="true" />
 
 	<span class="attribution tooltip-box">
 		© icons

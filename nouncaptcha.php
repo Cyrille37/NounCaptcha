@@ -33,28 +33,3 @@ else
 	require_once(__DIR__.'/src/Front.php');
 	new Cyrille\NounCaptcha\Front();
 }
-
-/*
-// define absolute path to plugin
-define('NOUNCAPTCHA_DIR_NAME', basename( dirname(__FILE__) ));
-define('NOUNCAPTCHA_ROOT', WP_PLUGIN_DIR . '/' . NOUNCAPTCHA_DIR_NAME);
-define('NOUNCAPTCHA_URL', WP_PLUGIN_URL . '/' . NOUNCAPTCHA_DIR_NAME);
-define('NOUNCAPTCHA_LIBRARY', NOUNCAPTCHA_ROOT . '/library');
-define('NOUNCAPTCHA_TEMPLATE', NOUNCAPTCHA_ROOT . '/templates');
-define('NOUNCAPTCHA_IMAGES_URL',NOUNCAPTCHA_URL . '/images');
-
-define('NOUNCAPTCHA_NOUNS_PATH', NOUNCAPTCHA_ROOT . '/nouns' );
-define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
-
-define('NOUNCAPTCHA_BAD_CONFIG_MESSAGE', '<h1 style="color: red">Plugin NounCaptcha is badly configured !</h1>');
-define('NOUNCAPTCHA_ERROR_MESSAGE', 'The response you submitted was incorrect. Please try again.');
-define('NOUNCAPTCHA_ERROR_MESSAGE_BR', 'The response you submitted was incorrect.<br/>Please try again.');
-
-
-function nouncaptcha_init() {
-	//global $wpdb;
-	wp_enqueue_script('jquery');
-	wp_enqueue_script( 'nouncaptcha.js', plugins_url( 'js/nouncaptcha.js', __FILE__ ) );
-}
-add_action('init', 'nouncaptcha_init', 100);
-*/

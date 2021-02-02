@@ -23,17 +23,6 @@ class Plugin
      */
     public function __construct()
     {
-        /*
-        define('NOUNCAPTCHA_DIR_NAME', basename( dirname(__FILE__) ));
-define('NOUNCAPTCHA_ROOT', WP_PLUGIN_DIR . '/' . NOUNCAPTCHA_DIR_NAME);
-define('NOUNCAPTCHA_URL', WP_PLUGIN_URL . '/' . NOUNCAPTCHA_DIR_NAME);
-define('NOUNCAPTCHA_LIBRARY', NOUNCAPTCHA_ROOT . '/library');
-define('NOUNCAPTCHA_TEMPLATE', NOUNCAPTCHA_ROOT . '/templates');
-define('NOUNCAPTCHA_IMAGES_URL',NOUNCAPTCHA_URL . '/images');
-
-define('NOUNCAPTCHA_NOUNS_PATH', NOUNCAPTCHA_ROOT . '/nouns' );
-define('NOUNCAPTCHA_NOUNS_URL', NOUNCAPTCHA_URL . '/nouns' );
-        */
         $folder = basename( dirname(__DIR__) ) ;
         $this->plugin_dir = WP_PLUGIN_DIR . '/'.$folder ;
         $this->plugin_url = WP_PLUGIN_URL . '/'.$folder ;
