@@ -2,8 +2,6 @@
 namespace Cyrille\NounCaptcha ;
 
 require_once(__DIR__.'/Utils.php');
-require_once(__DIR__.'/Services/Comment.php');
-require_once(__DIR__.'/Services/ContactForm7.php');
 
 /**
  * 
@@ -43,14 +41,21 @@ class Plugin
     {
         if( $this->get_option('on_comment') )
         {
+            require_once(__DIR__.'/Services/Comment.php');
             new Services\Comment( $this );
         }
 
         if( $this->get_option('on_wpcf7') )
         {
+            require_once(__DIR__.'/Services/ContactForm7.php');
             new Services\ContactForm7( $this );
         }
 
+        if( $this->get_option('on_cma') )
+        {
+            require_once(__DIR__.'/Services/CMAnswers.php');
+            new Services\CMAnswers( $this );
+        }
     }
 
     /**

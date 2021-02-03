@@ -75,6 +75,21 @@ NounCaptcha admin options page
 							</td>
 						</tr>
 
+						<!-- Option: on_cma -->
+
+						<tr valign="top">
+							<th scope="row"><?php _e( 'Activate on CM Answers' ); ?></th>
+							<td>
+								<input type="checkbox"
+									name="<?php echo Plugin::NAME ?>[on_cma]" value="1"
+									<?php \checked( '1', $this->get_option('on_cma') ); ?>
+									/>
+								<p class="description">
+									<?php _e( 'NounCaptcha can be activated on CMAnswers' ); ?>
+								</p>
+							</td>
+						</tr>
+
 						<!-- Option: nouns -->
 
 						<tr valign="top">
