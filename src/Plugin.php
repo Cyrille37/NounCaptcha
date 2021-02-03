@@ -11,6 +11,9 @@ require_once(__DIR__.'/Services/ContactForm7.php');
 class Plugin
 {
     const NAME = 'nouncaptcha' ;
+
+    const IMAGES_COUNT = 5 ;
+
     public $templates_dir ;
     public $plugin_dir ;
     public $plugin_url ;
@@ -76,7 +79,8 @@ class Plugin
 
     protected function computeQuestion()
     {
-        $images_count = 5 ;
+        $images_count = self::IMAGES_COUNT ;
+
         //
         // Charge toutes les questions des nouns actifs.
         //
