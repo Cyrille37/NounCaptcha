@@ -76,7 +76,10 @@ class Plugin
 
     protected function computeQuestion()
     {
-        // Charge les questions des nouns actifs.
+        $images_count = 5 ;
+        //
+        // Charge toutes les questions des nouns actifs.
+        //
 
         $questions = [];
         foreach( $this->get_option('nouns', []) as $name )
@@ -101,18 +104,22 @@ class Plugin
         // Keep some other data
         $question['attribution'] = $noun['attribution'];
         $question['folder'] = \substr( $noun['folder'], strlen(ABSPATH)-1 );
-        // Add good answer image
+
+        // Randomize images
+        shuffle($question['images']);
+        // Keep only some
+        $question['images'] = array_slice( $question['images'], 0 , $images_count - 1 );
+        // Add the good answer image
         $question['images'][] = $question['answer'];
         // Randomize images
         shuffle($question['images']);
-        // Then retrieve the answer one
+
+        // Then retrieve the position of the good answer
         for( $i=0; $i<count($question['images']); $i++ )
         {
             if( $question['images'][$i] == $question['answer'] )
             {
-                // Encrypt the answer's index
-                //$question['response'] = Utils::encrypt( $i, NONCE_KEY );
-                //break ;
+                // replace answer image filename by it's position
                 $question['answer'] = $i ;
                 return $question ;
             }
@@ -134,7 +141,8 @@ class Plugin
         $data = [
             'q' => $question['answer'],
         ];
-        // Json encoding need heavier load but php serialize is less secure with data that comes for outside.
+        // Json encoding need heavier load
+        // but php serialize is less secure with data that comes for outside.
         $question['response'] = Utils::encrypt( \json_encode($data), NONCE_KEY );
 
         ob_start();
