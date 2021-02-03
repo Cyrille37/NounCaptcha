@@ -9,6 +9,7 @@ Author URI: http://cyrille37.myopenid.com/
 License: GNU LGPL v3
 */
 
+/* Debug
 require_once(__DIR__.'/src/Utils.php');
 use Cyrille\NounCaptcha\Utils ;
 Utils::debug(__METHOD__, [
@@ -19,6 +20,7 @@ Utils::debug(__METHOD__, [
 	'pagenow' => isset($GLOBALS['pagenow']) ? $GLOBALS['pagenow'] : 'null',
 	'nouncaptcha' => (isset($_POST['nouncaptcha']) ? $_POST['nouncaptcha'] : 'null'),
 ]);
+*/
 
 if( is_blog_admin() )
 {

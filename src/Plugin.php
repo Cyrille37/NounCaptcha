@@ -229,7 +229,7 @@ class Plugin
      * Load file "captchas.php" found in Noun folder,
      * and override its values if file "captchas_<lang>.php" exists.
      *
-     * @return void
+     * @return Array
      */
     public function getNouns()
     {
@@ -240,9 +240,9 @@ class Plugin
 
         $lang = $this->getLang();
 
-        Utils::debug(__METHOD__,[
+        /*Utils::debug(__METHOD__,[
             //get_stylesheet_directory(),
-        ]);
+        ]);*/
 
         foreach( $this->getNounsFolders() as $folder )
         {

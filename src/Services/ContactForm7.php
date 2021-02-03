@@ -37,7 +37,7 @@ class ContactForm7
 	 */
     public function __construct( Plugin $nounCaptcha )
     {
-        Utils::debug(__METHOD__);
+        //Utils::debug(__METHOD__);
 
 		$this->nc = $nounCaptcha ;
 
@@ -85,10 +85,7 @@ class ContactForm7
 	{
 		$tag = new \WPCF7_FormTag( $tag );
 
-		Utils::debug(__METHOD__, [
-			'result'=>$result,
-			'tag'=>$tag,
-		]);
+		//Utils::debug(__METHOD__, [ 'result'=>$result, 'tag'=>$tag, ]);
 
 		if( $this->nc->captchaCheck($_POST) )
         {
@@ -135,10 +132,6 @@ class ContactForm7
 
 		if ( $validation_error )
 			$class .= ' wpcf7-not-valid';
-
-		Utils::debug(__METHOD__, [
-			'validation_error' => $validation_error,
-		]);
 
 		return 
 			$this->nc->captchaHtml( null, $class )

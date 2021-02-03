@@ -79,7 +79,8 @@ class Back extends Plugin
 
         if( \dirname($file) == $plug )
             $links[] = sprintf( '<a href="%s">%s</a>',
-                \admin_url( 'admin.php' ) . '?page='.Plugin::NAME,
+                //\admin_url( 'admin.php' ) . '?page='.Plugin::NAME,
+                \admin_url( 'options-general.php' ) . '?page='.Plugin::NAME,
                 __( 'Settings', 'wp-captcha' ) );
 
 		return $links;

@@ -15,7 +15,7 @@ class Comment
 
     public function __construct( Plugin $nounCaptcha )
     {
-        Utils::debug(__METHOD__);
+        //Utils::debug(__METHOD__);
 
 		$this->nc = $nounCaptcha ;
 
