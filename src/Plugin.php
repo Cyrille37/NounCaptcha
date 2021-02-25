@@ -301,12 +301,16 @@ class Plugin
             return null ;
         $noun = require($captcha_file) ;
 
-        // Overide language's values (like question text) for this Noun
-        $captcha_file = $ff.'/captchas_'.$lang.'.php' ;
-        if( file_exists($captcha_file ))
+        // Overide language's values, like attribution & question texts.
+        if( $lang )
         {
-            $overide = require($captcha_file);
-            $noun = \array_replace_recursive($noun, $overide);
+            if( isset($noun['attribution']['text-'.$lang]) )
+                $noun['attribution']['text'] = $noun['attribution']['text-'.$lang] ;
+            foreach( $noun['questions'] as &$q )
+            {
+                if( isset($q['text-'.$lang]) )
+                $q['text'] = $q['text-'.$lang];
+            }
         }
 
         $noun['folder'] = $ff ;

@@ -38,14 +38,14 @@ jQuery(document).ready(function($)
                 var $ul = $('<ul>');
 
                 $(
-                    '<li class="answer"><img src="'+nouncaptcha.nouns_url+'/'+name+'/'+q.answer+'" /></li>'
+                    '<li class="answer"><img src="'+nouncaptcha.nouns_url+'/'+name+'/'+q.answer+'" title="'+q.images[image]+'" /></li>'
                 ).appendTo($ul);    
                 for( var image in q.images )
                 {
                     $(
                         '<li class="'
                             +(q.answer == q.images[image] ? 'answer ' : '' )
-                            +'"><img src="'+nouncaptcha.nouns_url+'/'+name+'/'+q.images[image]+'" /></li>'
+                            +'"><img src="'+nouncaptcha.nouns_url+'/'+name+'/'+q.images[image]+'" title="'+q.images[image]+'" /></li>'
                     ).appendTo($ul);    
                 }
                 $ul.appendTo($q);
