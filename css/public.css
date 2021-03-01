@@ -27,11 +27,12 @@
     border: solid 2px #000000;    
 }
 
-.tooltip-box {
+#nouncaptcha .attribution.tooltip-box {
     position: relative;
     display: inline-block;
+    margin-left: 2rem;
 }
-.tooltip-box .tooltip-text {
+#nouncaptcha .attribution.tooltip-box .tooltip-text {
     visibility: hidden;
     width: 100px;
     background-color: white;
@@ -43,6 +44,6 @@
     border: gray solid 1px;
 }
 
-.tooltip-box:hover .tooltip-text {
+#nouncaptcha .attribution.tooltip-box:hover .tooltip-text {
     visibility: visible;
 }
