@@ -44,8 +44,13 @@ jQuery(document).ready(function($)
 
 	<span class="attribution tooltip-box">
 		© icons
-		<a class="tooltip-text" href="<?php echo $question['attribution']['url'] ?>" target="_blank">
-		<?php echo $question['attribution']['text'] ?></a>
+		<?php if( isset($question['attribution']['url']) && ! empty($question['attribution']['url']) ) { ?>
+			<a class="tooltip-text" href="<?php echo $question['attribution']['url'] ?>" target="_blank">
+				<?php echo $question['attribution']['text'] ?>
+			</a>
+		<?php } else { ?>
+			<span class="tooltip-text" ><?php echo $question['attribution']['text'] ?></span>
+		<?php } ?>
 	</span>
 
 </div>

@@ -25,7 +25,10 @@ jQuery(document).ready(function($)
             $(
                 '<h3>'+name+'</h3>'
                 +'<p>'
-                +'<a href="'+noun.attribution.url+'">'+noun.attribution.text+'</a>'
+                + (noun.attribution.url
+                    ? '<a href="'+noun.attribution.url+'">'+noun.attribution.text+'</a>'
+                    : ''+noun.attribution.text+''
+                )
                 +'</p>'
             ).appendTo($noun);
             for( var question in noun.questions )

@@ -9,8 +9,8 @@
 return [
 
     'attribution'=>[
-        'text' => 'CC BY 3.0, Luis Prado from "The Noun Project"',
-        'text-fr' => 'CC BY 3.0, Luis Prado de "The Noun Project"',
+        'text' => 'CC BY 3.0, Luis Prado from «The Noun Project»',
+        'text-fr' => 'CC BY 3.0, Luis Prado de «The Noun Project»',
         'url' => 'https://thenounproject.com/Luis',
     ],
     'questions' => [
