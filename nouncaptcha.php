@@ -1,11 +1,11 @@
 <?php
 /*
  Plugin Name: NounCaptcha
-Plugin URI: http://profiles.wordpress.org/cyrille37
+Plugin URI: https://github.com/Cyrille37/NounCaptcha
 Description: Adds NounCaptcha anti-spam solution to WordPress on the comment form and registration form.
 Version: 2.1
 Author: Cyrille Giquello
-Author URI: http://cyrille37.myopenid.com/
+Author URI: https://www.artefacts.coop/2013/03/12/cyrille-giquello/
 License: GNU LGPL v3
 */
 

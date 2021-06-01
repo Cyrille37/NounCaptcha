@@ -3,7 +3,7 @@ NounCaptcha
 
 NounCaptcha is a simple but pleasant visual captcha plugin for Wordpress witch use drawings from The Noun Project
 
-Read more in readme.txt.
+Read more in [readme.txt](readme.txt).
 
 ## V2 Roadmap
 
